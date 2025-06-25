@@ -1,1 +1,0 @@
-# conway-techincal

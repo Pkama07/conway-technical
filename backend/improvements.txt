@@ -1,0 +1,3 @@
+improvements that can be made
+- considering multiple events in the analysis; oftentimes it's gonna be more than a single event that will provide signal of an anomaly, ideally we'd have some process that groups events based on their probability of being connected to some unwanted behavior and analyzes them together with an LLM
+- doing parallel processing of the pages of the returned information from github in the polling process would result in faster processing of the results, leading to snappier UI updates

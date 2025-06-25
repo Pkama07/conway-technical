@@ -2,16 +2,15 @@ import asyncio
 import json
 import os
 from datetime import datetime
-from typing import AsyncGenerator, List, Optional
+from typing import Optional
 
-from redis import asyncio as aioredis
 from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
 from sse_starlette.sse import EventSourceResponse
 from supabase import Client
 from dotenv import load_dotenv
-from backend.common import get_supabase, get_redis
+from common import get_supabase, get_redis
+from common import WARNING_QUEUE
 
 load_dotenv()
 
@@ -62,49 +61,35 @@ async def list_summaries(
         )
 
 
-async def redis_event_stream(
-    request: Request, redis: aioredis.Redis
-) -> AsyncGenerator[str, None]:
+async def stream_reader(request: Request):
     """
-    Yields JSON-serialized warnings each time the poller publishes one.
-    Reads from Redis queue without popping (for streaming to frontend).
+    Yield new messages forever without popping from the queueu.
     """
-    pubsub = redis.pubsub()
-    await pubsub.subscribe("warning_channel")
+    redis = await get_redis()
+    last_id = "0-0"
 
-    try:
-        while True:
-            if await request.is_disconnected():
-                break
+    while True:
 
-            message = await pubsub.get_message(
-                ignore_subscribe_messages=True, timeout=1.0
-            )
+        if await request.is_disconnected():
+            break
 
-            if message and message["type"] == "message":
-                try:
-                    data = message["data"]
-                    if isinstance(data, bytes):
-                        data = data.decode("utf-8")
-                    json.loads(data)  # ensure it's valid json
-                    yield f"data: {data}\n\n"
-
-                except (json.JSONDecodeError, UnicodeDecodeError) as e:
-                    print(f"Error processing message: {e}")
-                    continue
-
-            await asyncio.sleep(0.01)  # yield
-
-    finally:
-        await pubsub.unsubscribe("warning_channel")
-        await pubsub.close()
+        results = await redis.xread(
+            {WARNING_QUEUE: last_id},
+            count=1,
+            block=500,
+        )
+        if results:
+            ((_, entries),) = results
+            last_id, fields = entries[0]
+            data = fields[b"data"].decode()
+            yield f"data: {data}\n\n"
+        else:
+            yield ": ping\n\n"
 
 
 @app.get("/stream")
-async def stream(request: Request, redis: aioredis.Redis = Depends(get_redis)):
-    return EventSourceResponse(
-        redis_event_stream(request, redis), media_type="text/event-stream"
-    )
+async def stream(request: Request):
+    return EventSourceResponse(stream_reader(request), media_type="text/event-stream")
 
 
 @app.get("/health")

@@ -1,0 +1,6 @@
+- GitHub Events API Pagination issues
+    - New events are constantly streaming, meaning the "newest" event changes very frequently
+    - However, results are returned in a paginated format; at most 100 events will be returned in a respone
+    - As a result, by the time I'm requesting the second page, it's possible that the results from the first page have propagated over
+    - This means that the events are "outpacing" my requests, meaning I could be missing some of the events
+    - Since there are at most 10 pages of results, 

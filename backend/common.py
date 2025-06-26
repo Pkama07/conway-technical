@@ -5,7 +5,7 @@ from redis import asyncio as aioredis
 from fastapi import HTTPException, status
 
 # redis key for the warning queue
-WARNING_QUEUE = "warning_queue"
+WARNING_QUEUE = "warning_queue_4"
 
 # supabase singleton
 _supabase_client: Optional[Client] = None

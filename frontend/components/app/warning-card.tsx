@@ -63,7 +63,7 @@ export default function WarningCard({
 			}`}
 		>
 			<CardHeader>
-				<div className="flex items-start justify-between gap-3">
+				<div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
 					<div className="flex-1 min-w-0">
 						<div className="flex items-center gap-2 mb-2">
 							<Badge
@@ -94,7 +94,7 @@ export default function WarningCard({
 						</div>
 					</div>
 
-					<div className="flex items-center gap-2 flex-shrink-0">
+					<div className="flex items-center gap-2 flex-shrink-0 self-start sm:self-auto">
 						<Avatar className="w-8 h-8">
 							<AvatarImage
 								src={actor.avatarUrl || "/placeholder.svg"}
@@ -104,7 +104,7 @@ export default function WarningCard({
 								{actor.name.charAt(0).toUpperCase()}
 							</AvatarFallback>
 						</Avatar>
-						<div className="text-right">
+						<div className="sm:text-right">
 							<a
 								href={actor.profileUrl}
 								target="_blank"

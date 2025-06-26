@@ -1,6 +1,0 @@
-improvements that can be made
-- considering multiple events in the analysis; oftentimes it's gonna be more than a single event that will provide signal of an anomaly, ideally we'd have some process that groups events based on their probability of being connected to some unwanted behavior and analyzes them together with an LLM
-- doing parallel processing of the pages of the returned information from github in the polling process would result in faster processing of the results, leading to snappier UI updates
-
-limitations
-- in every response, there's an X-Poll-Interval header that indicates the amount of time until I'm allowed to request the API again. In this time, there are countless events that are going unchecked; this is more of a limitation of the API but worth nothing

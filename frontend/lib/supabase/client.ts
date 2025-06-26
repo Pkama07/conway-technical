@@ -6,7 +6,7 @@ const browserSupabase = createClient(
 );
 
 export const getRelevantEvents = async (query: string) => {
-	const { data, error } = await browserSupabase
+	const { data } = await browserSupabase
 		.from("flagged_events")
 		.select()
 		.eq("has_been_processed", true)

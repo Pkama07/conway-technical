@@ -3,7 +3,7 @@
 import Title from "@/components/app/title";
 import Feedbox, { StreamMessage } from "@/components/app/feedbox";
 import Viewer from "@/components/app/viewer";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Home() {
 	const [currEvent, setCurrEvent] = useState<StreamMessage | null>(null);

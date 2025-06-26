@@ -8,7 +8,7 @@ interface JsonViewerProps {
 
 export default function JsonViewer({ currEvent }: JsonViewerProps) {
 	const formatJsonWithLineNumbers = (
-		obj: any
+		obj: unknown
 	): { number: number; content: string }[] => {
 		if (!obj) return [];
 

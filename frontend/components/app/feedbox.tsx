@@ -27,7 +27,7 @@ export interface StreamMessage {
 			url: string;
 		};
 		created_at: string;
-		[key: string]: any;
+		[key: string]: unknown;
 	};
 	analysis?: {
 		root_cause: string[];
@@ -62,7 +62,9 @@ export default function Feedbox({ setCurrEvent }: FeedboxProps) {
 						return newMessages;
 					});
 				}
-			} catch (error) {}
+			} catch (error) {
+				console.log(error);
+			}
 		};
 
 		eventSource.onerror = (error) => {

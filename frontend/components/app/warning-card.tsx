@@ -29,7 +29,6 @@ interface WarningCardProps {
 }
 
 export default function WarningCard({
-	id,
 	warningType,
 	repository,
 	actor,

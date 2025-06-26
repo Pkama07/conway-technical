@@ -1,3 +1,9 @@
+notes:
+
+- fly.io automatically spins down a machine after 5 minutes because I'm still on the trial period
+- this means that if you're on the application for a while, the feed might die, but you just need to refresh the website and it will spin up a new machine
+- (because a new request will have been made)
+
 components:
 
 - database of events stored on supabase, used to power the search feature of the website

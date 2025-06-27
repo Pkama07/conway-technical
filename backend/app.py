@@ -58,7 +58,7 @@ async def list_summaries(
         List of warning records from the database
     """
     try:
-        query = supabase.table("warnings").select("*")
+        query = supabase.table("flagged_events").select("*")
         if since is not None:
             since_datetime = datetime.fromtimestamp(since).isoformat()
             query = query.gt("created_at", since_datetime)
